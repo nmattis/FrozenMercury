@@ -12,6 +12,8 @@ import {
   View
 } from 'react-native';
 
+import OutsideTemp from '../components/OutsideTemp';
+
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' +
     'Cmd+D or shake for dev menu',
@@ -32,6 +34,7 @@ export default class App extends Component {
         <Text style={styles.instructions}>
           {instructions}
         </Text>
+        <OutsideTemp />
       </View>
     );
   }
