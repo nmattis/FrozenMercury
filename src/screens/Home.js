@@ -6,32 +6,58 @@ import {
   View
 } from 'react-native';
 
-import OutsideTemp from '../components/OutsideTemp';
-
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' +
-    'Cmd+D or shake for dev menu',
-  android: 'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
+import TempWidget from '../components/TempWidget';
+import getCurrentLocation from '../utils/getCurrentLocation';
+import getLocalWeather from '../utils/getLocalWeather';
 
 class Home extends Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit App.js
-        </Text>
-        <Text style={styles.instructions}>
-          {instructions}
-        </Text>
-        <OutsideTemp />
-      </View>
-    );
-  }
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            latitude: null,
+            longitude: null,
+            location: null,
+            temp: null,
+            error: null,
+        };
+    }
+
+    componentDidMount() {
+        getCurrentLocation().then((position) => {
+            var lat = position.coords.latitude;
+            var lon = position.coords.longitude;
+
+            this.setState({
+                latitude: lat,
+                longitude: lon,
+                error: null
+            });
+
+            getLocalWeather(lat, lon)
+                .then((response) => response.json())
+                .then((data) => {
+                    this.setState({ 
+                        location: data.name,
+                        temp: data.main.temp,
+                        error: null
+                    });
+                })
+                .catch((err) => {
+                    this.setState({ error: err.message });
+                });
+        }).catch((err) => {
+            this.setState({ error: err.message });
+        });
+    }
+
+    render() {
+        return (
+        <View style={styles.container}>
+            <TempWidget title={this.state.location} temp={this.state.temp} error={this.state.error} />
+        </View>
+        );
+    }
 }
 
 const styles = StyleSheet.create({
