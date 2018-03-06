@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 
-class TempWidget extends Component {
+class Temperature extends Component {
     render() {
         return (
             <View style={{ flexGrow: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -13,4 +13,4 @@ class TempWidget extends Component {
     }
 }
 
-export default TempWidget;
+export default Temperature;

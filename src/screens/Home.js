@@ -6,7 +6,9 @@ import {
   View
 } from 'react-native';
 
-import TempWidget from '../components/TempWidget';
+import Temperature from '../components/Temperature';
+import Timer from '../components/Timer';
+
 import getCurrentLocation from '../utils/getCurrentLocation';
 import getLocalWeather from '../utils/getLocalWeather';
 
@@ -18,7 +20,7 @@ class Home extends Component {
             latitude: null,
             longitude: null,
             location: null,
-            temp: null,
+            outside_temp: null,
             error: null,
         };
     }
@@ -39,7 +41,7 @@ class Home extends Component {
                 .then((data) => {
                     this.setState({ 
                         location: data.name,
-                        temp: data.main.temp,
+                        outside_temp: data.main.temp,
                         error: null
                     });
                 })
@@ -54,7 +56,11 @@ class Home extends Component {
     render() {
         return (
         <View style={styles.container}>
-            <TempWidget title={this.state.location} temp={this.state.temp} error={this.state.error} />
+            <Temperature title={this.state.location} temp={this.state.outside_temp} error={this.state.error} />
+            {/* <Temperature />
+            <Timer />
+            <Timer />
+            <Button /> */}
         </View>
         );
     }
