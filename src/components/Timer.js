@@ -4,6 +4,9 @@ import { View, Text } from 'react-native';
 class Timer extends Component {
     render() {
         return (
+            <View>
+                <Text>Timer</Text>
+            </View>
         );
     }
 }
