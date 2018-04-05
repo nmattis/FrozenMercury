@@ -4,9 +4,10 @@ import {
   StyleSheet,
   Text,
   View,
-  Button,
   Slider
 } from 'react-native';
+
+import AlertButton from '../components/AlertButton';
 
 class Settings extends Component {
     constructor(props) {
@@ -54,8 +55,8 @@ class Settings extends Component {
                     onValueChange = {val => this.setState({temp_threshold: val})}
                     onSlidingComplete = {val => this.saveThreshold(val)}
                 />
-                <Button onPress={this.clearHistory} title='Clear History' />
-                <Button onPress={this.resetDefaults} title='Reset to Defaults' />
+                <AlertButton buttonName='Clear History' title='Are you sure?' message='This will clear all stored history from the app.' pressFunc={this.clearHistory} />
+                <AlertButton buttonName='Reset Defaults' title='Are you sure?' message='This will reset all settings, clear the saved sensor, and clear your history.' pressFunc={this.resetDefaults} />
             </View>
         );
     }
