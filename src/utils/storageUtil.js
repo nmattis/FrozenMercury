@@ -13,7 +13,11 @@ function saveToStorage(key, data) {
 }
 
 function readFromStorage(key) {
-    AsyncStorage.getItem(key).then((data) => {
-        const storageData = JSON.parse(data);
-    });
+    try {
+        AsyncStorage.getItem(key).then((data) => {
+            const storageData = JSON.parse(data);
+        }).done();
+    } catch(error) {
+        return error;
+    }
 }
