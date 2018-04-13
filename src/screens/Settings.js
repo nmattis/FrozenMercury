@@ -11,14 +11,14 @@ import {
 
 import AlertButton from '../components/AlertButton';
 
-import storageOp from '../utils/storageUtil';
 import tempConvert from '../utils/tempConvert';
+import { keyExists, readFromStorage, saveToStorage } from '../utils/storageUtil';
 
 class Settings extends Component {
     constructor(props) {
         super(props);
 
-        const settingsKey = 'SETTINGS';
+        const SETTINGS_KEY = '@SETTINGS:key';
         this.state = {
             bluetooth_device: null,
             temp_unit: 'F',
@@ -27,11 +27,17 @@ class Settings extends Component {
     }
 
     selectDevice() {
+        saveToStorage(this.SETTINGS_KEY, this.state).then(() => {
+            console.log('Hope it saves');
+            readFromStorage(this.SETTINGS_KEY).then(savedData => {
+                console.log('savedStorage' + savedData);
+            }).done();
+        }).done();
         console.log('Pick a device');
     }
 
-    saveThreshold(val) {
-        console.log(val);
+    saveThreshold() {
+        console.log(this.state.temp_threshold);
     }
 
     clearHistory() {
@@ -43,7 +49,17 @@ class Settings extends Component {
     }
 
     componentDidMount() {
-        // read from storage and load settings
+        keyExists(this.SETTINGS_KEY).then(exists => {
+            if (exists) {
+                readFromStorage(this.SETTINGS_KEY).then(savedData => {
+                    this.setState({
+                        savedData
+                    });
+                }).done();
+            } else {
+                saveToStorage(this.SETTINGS_KEY, this.state);
+            }
+        });
     }
 
     render() {
@@ -70,7 +86,7 @@ class Settings extends Component {
                     maximumValue = {100}
                     value = {this.state.temp_threshold}
                     onValueChange = {val => this.setState({temp_threshold: val})}
-                    onSlidingComplete = {val => this.saveThreshold(val)}
+                    onSlidingComplete = {val => this.saveThreshold()}
                 />
                 <AlertButton 
                     buttonName='Clear History'

@@ -13,7 +13,7 @@ class HistoryList extends Component {
         return(
             <ListItem
                 hideChevron
-                title = {item.ts.toDateString()}
+                title = {item.ts}
                 subtitle = {'Avg Outside Temp: ' + item.avg_weather + '    Total Time Used: ' + item.elapsed_time}
             />
         );
